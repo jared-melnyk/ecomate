@@ -1,4 +1,17 @@
-document.body.onload = addElement;
+window.onload = function () {
+  getPrices();
+  addElement();
+};
+
+function getPrices() {
+  const orderTotal = document.querySelectorAll(".order-total");
+
+  console.log("order total: ", orderTotal);
+
+  const p = document.querySelectorAll(".thicc");
+
+  console.log(p);
+}
 
 function addElement() {
   // create a new div element
