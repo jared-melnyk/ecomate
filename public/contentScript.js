@@ -1,16 +1,20 @@
 window.onload = function () {
-  getPrices();
-  addElement();
+  setTimeout(function () {
+    listenForCheckout();
+    addElement();
+  }, 2000);
 };
 
-function getPrices() {
-  const orderTotal = document.querySelectorAll(".order-total");
+function listenForCheckout() {
+  const checkoutButton = document.querySelector(".btn-checkout.totals-btn");
+  checkoutButton.addEventListener("click", clickCheckout);
+  console.log(checkoutButton);
+}
 
-  console.log("order total: ", orderTotal);
+function clickCheckout() {
+  const orderTotal = document.querySelector("dd.order-total").innerHTML;
 
-  const p = document.querySelectorAll(".thicc");
-
-  console.log(p);
+  console.log("order total at checkout: ", orderTotal);
 }
 
 function addElement() {
