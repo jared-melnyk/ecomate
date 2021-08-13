@@ -1,3 +1,4 @@
+/* global chrome */
 window.onload = function () {
   setTimeout(function () {
     listenForCheckout();
@@ -10,32 +11,57 @@ function listenForCheckout() {
   checkoutButton.addEventListener("click", clickCheckout);
 }
 
-function clickCheckout() {
-  const productDivs = document.querySelectorAll("div.product-info");
+async function clickCheckout() {
+  const productDivs = document.querySelectorAll("div.order-item__container");
 
   let productsList = [];
+  let orderTotal = 0;
   productDivs.forEach((product) => {
-    let newProd = new Product();
-    const aTag = product.firstChild;
-    const aTagChildren = [...aTag.children];
-    aTagChildren.forEach((child) => {
-      const childClasses = [...child.classList];
-      console.log("childClasses: ", childClasses);
-      if (childClasses.includes("product-info__brand-name")) {
-        newProd.brandName = child.innerHTML;
-      }
-      if (childClasses.includes("product-info__product-name")) {
-        newProd.productName = child.innerHTML;
+    const brandName = product.getElementsByClassName(
+      "product-info__brand-name"
+    )[0].innerHTML;
+    const productName = product.getElementsByClassName(
+      "product-info__product-name"
+    )[0].innerHTML;
+    const salePrice = parseFloat(
+      parseFloat(
+        product
+          .getElementsByClassName("order-item__total-price")[0]
+          .innerText.slice(1)
+      ).toFixed(2)
+    );
+    orderTotal += salePrice;
+    let newProd = new Product(brandName, productName, salePrice);
+    productsList.push(newProd);
+  });
+  let newOrder = new Order(productsList, orderTotal);
+
+  async function retrieveStorage(key) {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.get(key, resolve);
+    }).then((result) => {
+      if (key == null) {
+        return result;
+      } else {
+        return result[key];
       }
     });
-    console.log(newProd);
-    productsList.push(newProd);
-    console.log(productsList);
-  });
+  }
 
-  const orderTotal = document.querySelector("dd.order-total").innerHTML;
+  let purchaseList = await retrieveStorage("ecomate");
 
-  console.log("order total at checkout: ", orderTotal);
+  if (purchaseList === undefined) {
+    chrome.storage.sync.set({ ecomate: [newOrder] }, function () {
+      console.log(`New purchase with total ${newOrder.total} saved to EcoMate`);
+    });
+  } else {
+    purchaseList.push(newOrder);
+    chrome.storage.sync.set({ ecomate: purchaseList }, function () {
+      console.log(`New purchase with total ${newOrder.total} saved to EcoMate`);
+    });
+  }
+
+  console.log("Saved Purchases: ", purchaseList);
 }
 
 function addElement() {
@@ -54,5 +80,12 @@ class Product {
     this.salePrice = salePrice;
     this.regPrice = regPrice;
     this.description = description;
+  }
+}
+
+class Order {
+  constructor(productsList, total) {
+    this.productsList = productsList;
+    this.total = total;
   }
 }
