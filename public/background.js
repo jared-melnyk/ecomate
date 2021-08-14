@@ -1,14 +1,16 @@
 /* global chrome */
-let color = "#3aa757";
-
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ color });
-  console.log("Default background color set to %cgreen", `color: ${color}`);
+  chrome.storage.sync.set({ showReport: false });
 });
 
-// chrome.scripting.registerContentScript({
-//   id: 1,
-//   matches: ["http://*.nytimes.com/*"],
-//   exclude_matches: ["*://*/*business*"],
-//   js: ["contentScript.js"],
-// });
+chrome.runtime.onMessage.addListener((msg, sender, response) => {
+  switch (msg.type) {
+    case "toggleReport":
+      const showReport = chrome.storage.sync.get("showReport");
+      response(showReport);
+      break;
+    default:
+      response("unknown request");
+      break;
+  }
+});
