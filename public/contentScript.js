@@ -48,15 +48,15 @@ async function clickCheckout() {
     });
   }
 
-  let purchaseList = await retrieveStorage("ecomate");
+  let purchaseList = await retrieveStorage("ecomate-order");
 
   if (purchaseList === undefined) {
-    chrome.storage.sync.set({ ecomate: [newOrder] }, function () {
+    chrome.storage.sync.set({ "ecomate-order": [newOrder] }, function () {
       console.log(`New purchase with total ${newOrder.total} saved to EcoMate`);
     });
   } else {
     purchaseList.push(newOrder);
-    chrome.storage.sync.set({ ecomate: purchaseList }, function () {
+    chrome.storage.sync.set({ "ecomate-order": purchaseList }, function () {
       console.log(`New purchase with total ${newOrder.total} saved to EcoMate`);
     });
   }

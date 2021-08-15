@@ -1,6 +1,7 @@
 /* global chrome */
 
 import React from "react";
+import { getCurrent } from "react-chrome-extension-router";
 import "./App.css";
 import Button from "./Button";
 import Report from "./Report";
@@ -15,16 +16,13 @@ class App extends React.Component {
     this.toggleReport = this.toggleReport.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     getCurrentTab((tab) => {
       chrome.runtime.sendMessage(
-        { type: "toggleReport", tabId: tab.id },
+        { type: "get-show-report", tabId: tab.id },
         (response) => {
-          if (response) {
-            this.setState({
-              showReport: Object.assign(this.state.showReport, response),
-            });
-          }
+          console.log("received show-report in cDM: ", response);
+          this.setState({ showReport: response });
         }
       );
     });

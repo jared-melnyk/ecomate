@@ -1,8 +1,18 @@
 /* global chrome */
 
+import { getCurrentTab } from "./Utils";
+
 const Button = (props) => {
   const handleClick = async () => {
-    await chrome.storage.sync.set({ showReport: true });
+    getCurrentTab((tab) => {
+      chrome.runtime.sendMessage(
+        { type: "set-show-report", tabId: tab.id },
+        (response) => {
+          console.log(response);
+        }
+      );
+    });
+
     await chrome.tabs.create({
       url: "/index.html",
     });
