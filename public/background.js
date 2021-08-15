@@ -13,12 +13,17 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
   } else if (msg.type === "set-show-report") {
     console.log("message received: set-show-report");
-    chrome.storage.sync.set({ "ecomate-show-report": true });
-    sendResponse("set show-report success");
+    chrome.storage.sync.set({ "ecomate-show-report": true }, () => {
+      sendResponse("showReport set");
+    });
   } else if (msg.type === "get-user-order") {
     data = retrieveStorage("ecomate-order");
     console.log("message received: get-user-order");
     sendResponse(data);
+  } else if (msg.type === "unset-show-report") {
+    chrome.storage.sync.set({ "ecomate-show-report": false }, () => {
+      sendResponse("showReport un-set");
+    });
   } else {
     console.log("busted into default onMessage response");
     sendResponse("unknown request");
@@ -38,3 +43,7 @@ async function retrieveStorage(key) {
     }
   });
 }
+
+chrome.action.onClicked.addListener(() => {
+  chrome.runtime.sendMessage();
+});

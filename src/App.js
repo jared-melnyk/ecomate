@@ -1,7 +1,6 @@
 /* global chrome */
 
 import React from "react";
-import { getCurrent } from "react-chrome-extension-router";
 import "./App.css";
 import Button from "./Button";
 import Report from "./Report";
@@ -37,7 +36,10 @@ class App extends React.Component {
     return (
       <div>
         {this.state.showReport ? (
-          <Report />
+          <Report
+            toggleReport={this.toggleReport}
+            showReport={this.state.showReport}
+          />
         ) : (
           <div className="App">
             <img
