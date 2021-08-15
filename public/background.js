@@ -24,6 +24,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   } else if (msg.type === "unset-show-report") {
     chrome.storage.sync.set({ "ecomate-show-report": false }, () => {
       sendResponse("showReport un-set");
+      getCurrentTab().then((tab) => {
+        chrome.tabs.remove(tab.id);
+      });
     });
   } else {
     console.log("busted into default onMessage response");
@@ -48,3 +51,9 @@ async function retrieveStorage(key) {
 chrome.action.onClicked.addListener(() => {
   chrome.runtime.sendMessage();
 });
+
+async function getCurrentTab() {
+  let queryOptions = { active: true, currentWindow: true };
+  let [tab] = await chrome.tabs.query(queryOptions);
+  return tab;
+}

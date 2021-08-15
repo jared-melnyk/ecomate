@@ -11,7 +11,7 @@ class App extends React.Component {
     super();
     this.state = {
       showReport: false,
-      orderHistory: {},
+      orderHistory: [{ productsList: [] }],
     };
     this.toggleReport = this.toggleReport.bind(this);
   }
@@ -40,7 +40,7 @@ class App extends React.Component {
   };
 
   render() {
-    console.log("showReport: ", this.state.showReport);
+    console.log("this is App state: ", this.state);
     return (
       <div>
         {this.state.showReport ? (

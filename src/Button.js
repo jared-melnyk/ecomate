@@ -15,16 +15,19 @@ const Button = (props) => {
         }
       );
     });
-    setTimeout(() => {
-      chrome.tabs.create({
-        url: "/index.html",
-      });
-    }, 200);
+    if (props.showReport) {
+    } else {
+      setTimeout(() => {
+        chrome.tabs.create({
+          url: "/index.html",
+        });
+      }, 200);
+    }
   };
-  const viewPrefix = props.showReport ? "Close" : "View";
+  const viewPrefix = props.showReport ? "Close" : "View My";
   return (
     <button id="view-report-btn" onClick={handleClick}>
-      {viewPrefix} My Report
+      {viewPrefix} Report
     </button>
   );
 };
