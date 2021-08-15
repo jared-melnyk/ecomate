@@ -5,9 +5,9 @@ const Report = (props) => {
   console.log("these are Report props: ", props);
 
   return (
-    <div className="my-report-container">
+    <Container id="report-container">
       <h1>Here is your EcoMate Report</h1>
-      <Container id="report-container">
+      <div>
         {props.orderHistory.map((order) =>
           order.productsList.length > 0 ? (
             <div>
@@ -25,12 +25,12 @@ const Report = (props) => {
             <h4>You have no EcoMate shopping history.</h4>
           )
         )}
-      </Container>
+      </div>
       <MyButton
         toggleReport={props.toggleReport}
         showReport={props.showReport}
       />
-    </div>
+    </Container>
   );
 };
 

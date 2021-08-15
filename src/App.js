@@ -5,6 +5,7 @@ import "./App.css";
 import MyButton from "./MyButton";
 import Report from "./Report";
 import { getCurrentTab } from "./Utils";
+import { Container } from "@material-ui/core";
 
 class App extends React.Component {
   constructor() {
@@ -40,9 +41,8 @@ class App extends React.Component {
   };
 
   render() {
-    console.log("this is App state: ", this.state);
     return (
-      <div>
+      <Container my={2}>
         {this.state.showReport ? (
           <Report
             toggleReport={this.toggleReport}
@@ -63,7 +63,7 @@ class App extends React.Component {
             />
           </div>
         )}
-      </div>
+      </Container>
     );
   }
 }

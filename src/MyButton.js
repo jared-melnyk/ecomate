@@ -2,8 +2,16 @@
 
 import { getCurrentTab } from "./Utils";
 import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = (theme) => ({
+  root: {
+    margin: 15,
+  },
+});
 
 const MyButton = (props) => {
+  const { classes } = props;
   const handleClick = async () => {
     const messageType = props.showReport
       ? "unset-show-report"
@@ -28,7 +36,7 @@ const MyButton = (props) => {
   const viewPrefix = props.showReport ? "Close" : "View My";
   return (
     <Button
-      className="my-button"
+      className={classes.root}
       onClick={handleClick}
       variant="contained"
       color="primary"
@@ -38,4 +46,4 @@ const MyButton = (props) => {
   );
 };
 
-export default MyButton;
+export default withStyles(styles)(MyButton);
