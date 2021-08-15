@@ -16,7 +16,17 @@ const Report = (props) => {
               </h2>
               <ul>
                 {order.productsList.map((product) => (
-                  <li>Product Name: {product.productName}</li>
+                  <div>
+                    <li>
+                      <img
+                        src={product.imageUrl}
+                        width={50}
+                        height={50}
+                        alt={""}
+                      ></img>
+                    </li>
+                    <li>Product Name: {product.productName}</li>
+                  </div>
                 ))}
               </ul>
               <h3>Total: ${order.total}</h3>

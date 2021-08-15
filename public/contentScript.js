@@ -30,8 +30,9 @@ async function clickCheckout() {
           .innerText.slice(1)
       ).toFixed(2)
     );
+    const imageUrl = product.getElementsByTagName("img")[0].getAttribute("src");
     orderTotal += salePrice;
-    let newProd = new Product(brandName, productName, salePrice);
+    let newProd = new Product(brandName, productName, salePrice, imageUrl);
     productsList.push(newProd);
   });
   let newOrder = new Order(productsList, orderTotal);
@@ -83,10 +84,25 @@ function addElement() {
 }
 
 class Product {
-  constructor(brandName, productName, salePrice, regPrice, description) {
+  constructor(
+    brandName,
+    productName,
+    salePrice,
+    imageUrl,
+    regPrice,
+    description
+  ) {
+    const rawUrl = window.location.href;
+    const parsedUrl = rawUrl.slice(
+      rawUrl.search("://") + 3,
+      rawUrl.search(".com") + 4
+    );
+    const fullImageUrl = parsedUrl + imageUrl;
+    console.log("full imageUrl", fullImageUrl);
     this.brandName = brandName;
     this.productName = productName;
     this.salePrice = salePrice;
+    this.imageUrl = fullImageUrl;
     this.regPrice = regPrice;
     this.description = description;
   }
