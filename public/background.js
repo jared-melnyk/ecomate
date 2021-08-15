@@ -1,6 +1,9 @@
 /* global chrome */
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ "ecomate-show-report": false });
+  chrome.storage.sync.set({
+    "ecomate-show-report": false,
+    "ecomate-order-history": [{ productsList: [] }],
+  });
 });
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {

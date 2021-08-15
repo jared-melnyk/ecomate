@@ -1,8 +1,9 @@
 /* global chrome */
 
 import { getCurrentTab } from "./Utils";
+import Button from "@material-ui/core/Button";
 
-const Button = (props) => {
+const MyButton = (props) => {
   const handleClick = async () => {
     const messageType = props.showReport
       ? "unset-show-report"
@@ -26,10 +27,15 @@ const Button = (props) => {
   };
   const viewPrefix = props.showReport ? "Close" : "View My";
   return (
-    <button id="view-report-btn" onClick={handleClick}>
+    <Button
+      className="my-button"
+      onClick={handleClick}
+      variant="contained"
+      color="primary"
+    >
       {viewPrefix} Report
-    </button>
+    </Button>
   );
 };
 
-export default Button;
+export default MyButton;

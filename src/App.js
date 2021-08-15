@@ -2,7 +2,7 @@
 
 import React from "react";
 import "./App.css";
-import Button from "./Button";
+import MyButton from "./MyButton";
 import Report from "./Report";
 import { getCurrentTab } from "./Utils";
 
@@ -57,7 +57,7 @@ class App extends React.Component {
               alt="logo"
             />
             <h1>Welcome To EcoMate</h1>
-            <Button
+            <MyButton
               toggleReport={this.toggleReport}
               showReport={this.state.showReport}
             />

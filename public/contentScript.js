@@ -48,9 +48,10 @@ async function clickCheckout() {
     });
   }
 
-  let purchaseList = await retrieveStorage("ecomate-order-history");
+  let currentOrderHistory = await retrieveStorage("ecomate-order-history");
+  console.log("currentOrderHistory: ", currentOrderHistory);
 
-  if (purchaseList === undefined) {
+  if (!currentOrderHistory[0].productsList.length) {
     chrome.storage.sync.set(
       { "ecomate-order-history": [newOrder] },
       function () {
@@ -60,9 +61,9 @@ async function clickCheckout() {
       }
     );
   } else {
-    purchaseList.push(newOrder);
+    currentOrderHistory.push(newOrder);
     chrome.storage.sync.set(
-      { "ecomate-order-history": purchaseList },
+      { "ecomate-order-history": currentOrderHistory },
       function () {
         console.log(
           `New purchase with total ${newOrder.total} saved to EcoMate order history`
@@ -70,8 +71,6 @@ async function clickCheckout() {
       }
     );
   }
-
-  console.log("Saved Purchases: ", purchaseList);
 }
 
 function addElement() {
@@ -95,7 +94,16 @@ class Product {
 
 class Order {
   constructor(productsList, total) {
+    const today = new Date(Date.now()).toDateString();
+    const rawUrl = window.location.href;
+    const parsedUrl = rawUrl.slice(
+      rawUrl.search("://") + 3,
+      rawUrl.search(".com") + 4
+    );
+
     this.productsList = productsList;
     this.total = total;
+    this.date = today;
+    this.purchaseUrl = parsedUrl;
   }
 }
