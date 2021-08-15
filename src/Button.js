@@ -7,7 +7,7 @@ const Button = (props) => {
     const messageType = props.showReport
       ? "unset-show-report"
       : "set-show-report";
-    getCurrentTab((tab) => {
+    await getCurrentTab((tab) => {
       chrome.runtime.sendMessage(
         { type: messageType, tabId: tab.id },
         (response) => {
@@ -15,10 +15,11 @@ const Button = (props) => {
         }
       );
     });
-
-    await chrome.tabs.create({
-      url: "/index.html",
-    });
+    setTimeout(() => {
+      chrome.tabs.create({
+        url: "/index.html",
+      });
+    }, 200);
   };
   const viewPrefix = props.showReport ? "Close" : "View";
   return (

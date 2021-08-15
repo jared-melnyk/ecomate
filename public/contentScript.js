@@ -38,27 +38,37 @@ async function clickCheckout() {
 
   async function retrieveStorage(key) {
     return new Promise((resolve, reject) => {
-      chrome.storage.sync.get(key, resolve);
-    }).then((result) => {
-      if (key == null) {
-        return result;
-      } else {
-        return result[key];
+      try {
+        chrome.storage.sync.get(key, function (value) {
+          resolve(value[key]);
+        });
+      } catch (e) {
+        reject(e);
       }
     });
   }
 
-  let purchaseList = await retrieveStorage("ecomate-order");
+  let purchaseList = await retrieveStorage("ecomate-order-history");
 
   if (purchaseList === undefined) {
-    chrome.storage.sync.set({ "ecomate-order": [newOrder] }, function () {
-      console.log(`New purchase with total ${newOrder.total} saved to EcoMate`);
-    });
+    chrome.storage.sync.set(
+      { "ecomate-order-history": [newOrder] },
+      function () {
+        console.log(
+          `New purchase with total ${newOrder.total} saved to EcoMate order history`
+        );
+      }
+    );
   } else {
     purchaseList.push(newOrder);
-    chrome.storage.sync.set({ "ecomate-order": purchaseList }, function () {
-      console.log(`New purchase with total ${newOrder.total} saved to EcoMate`);
-    });
+    chrome.storage.sync.set(
+      { "ecomate-order-history": purchaseList },
+      function () {
+        console.log(
+          `New purchase with total ${newOrder.total} saved to EcoMate order history`
+        );
+      }
+    );
   }
 
   console.log("Saved Purchases: ", purchaseList);

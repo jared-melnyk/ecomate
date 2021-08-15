@@ -4,7 +4,6 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  let data;
   if (msg.type === "get-show-report") {
     console.log("message received: get-show-report");
     retrieveStorage("ecomate-show-report").then((result) => {
@@ -16,10 +15,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     chrome.storage.sync.set({ "ecomate-show-report": true }, () => {
       sendResponse("showReport set");
     });
-  } else if (msg.type === "get-user-order") {
-    data = retrieveStorage("ecomate-order");
-    console.log("message received: get-user-order");
-    sendResponse(data);
+  } else if (msg.type === "get-order-history") {
+    console.log("message received: get-order-history");
+    retrieveStorage("ecomate-order-history").then((result) => {
+      console.log("response sent from get-order-history: ", result);
+      sendResponse(result);
+    });
   } else if (msg.type === "unset-show-report") {
     chrome.storage.sync.set({ "ecomate-show-report": false }, () => {
       sendResponse("showReport un-set");

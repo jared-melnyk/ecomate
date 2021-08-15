@@ -11,6 +11,7 @@ class App extends React.Component {
     super();
     this.state = {
       showReport: false,
+      orderHistory: {},
     };
     this.toggleReport = this.toggleReport.bind(this);
   }
@@ -22,6 +23,13 @@ class App extends React.Component {
         (response) => {
           console.log("received show-report in cDM: ", response);
           this.setState({ showReport: response });
+        }
+      );
+      chrome.runtime.sendMessage(
+        { type: "get-order-history", tabId: tab.id },
+        (response) => {
+          console.log("received order-history in cDM: ", response);
+          this.setState({ orderHistory: response });
         }
       );
     });
@@ -39,6 +47,7 @@ class App extends React.Component {
           <Report
             toggleReport={this.toggleReport}
             showReport={this.state.showReport}
+            orderHistory={this.state.orderHistory}
           />
         ) : (
           <div className="App">
