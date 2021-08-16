@@ -32,3 +32,8 @@
   color: #f2e8cf;
   background-color: #386641;
 }
+
+.report-logo {
+  max-width: 100%;
+  height: auto;
+}

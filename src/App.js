@@ -42,7 +42,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Container my={2}>
+      <Container maxwidth={"md"} my={2}>
         {this.state.showReport ? (
           <Report
             toggleReport={this.toggleReport}

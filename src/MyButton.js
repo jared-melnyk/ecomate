@@ -7,6 +7,8 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = (theme) => ({
   root: {
     margin: 15,
+    backgroundColor: "#A7C957",
+    color: "#386641",
   },
 });
 
@@ -33,13 +35,12 @@ const MyButton = (props) => {
       }, 200);
     }
   };
-  const viewPrefix = props.showReport ? "Close" : "View My";
+  const viewPrefix = props.showReport ? "Close" : "View";
   return (
     <Button
       className={classes.root}
       onClick={handleClick}
-      variant="contained"
-      color="primary"
+      variant={"contained"}
     >
       {viewPrefix} Report
     </Button>
